@@ -75,37 +75,10 @@ router.get('/', async (req, res) => {
                 },
             });
         } else {
+            products = await Product.find();
         }
 
-        res.status(200).json(users);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
-
-// GET USER STATS
-/* Getting the total number of users created in the last year. */
-router.get('/stats', isAdmin, async (req, res) => {
-    const date = new Date();
-    /* Getting the current date and subtracting 1 year from it. */
-    const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
-
-    try {
-        const data = await User.aggregate([
-            {
-                $match: { createdAt: { $gte: lastYear } },
-            },
-            {
-                $project: { month: { $month: '$createdAt' } },
-            },
-            {
-                $group: {
-                    _id: '$month',
-                    total: { $sum: 1 },
-                },
-            },
-        ]);
-        res.status(200).json(data);
+        res.status(200).json(products);
     } catch (err) {
         res.status(500).json(err);
     }
