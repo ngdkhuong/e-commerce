@@ -1,17 +1,17 @@
 import { ArrowBackIosNewOutlined, ArrowForwardIosOutlined } from '@mui/icons-material';
 import { useState } from 'react';
 import styled from 'styled-components';
-import './animationBtn.css';
 import { sliderItems } from '../data';
+import Button from './Button/Button';
 
 const Container = styled.div`
     width: 100%;
     height: 100vh;
     display: flex;
-    background: rgb(63, 94, 251);
-    background: linear-gradient(52deg, rgba(63, 94, 251, 1) 0%, rgba(55, 182, 119, 1) 67%);
     position: relative;
     overflow: hidden;
+    width: 100%;
+    margin: 0 auto;
 `;
 
 const Arrow = styled.div`
@@ -54,7 +54,7 @@ const ImgContainer = styled.div`
 
 const Image = styled.img`
     width: 80%;
-    object-content: cover;
+    object-fit: contain;
 `;
 
 const InfoContainer = styled.div`
@@ -72,11 +72,6 @@ const Desc = styled.p`
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 3px;
-`;
-
-const Button = styled.button`
-    padding: 10px;
-    font-size: 20px;
 `;
 
 const Slider = () => {
@@ -104,7 +99,7 @@ const Slider = () => {
                         <InfoContainer>
                             <Title>{item.title}</Title>
                             <Desc>{item.desc}</Desc>
-                            <Button className="button">Add to Bag</Button>
+                            <Button size="lg">Add to Bag</Button>
                         </InfoContainer>
                     </Slide>
                 ))}

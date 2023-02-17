@@ -21,3 +21,21 @@ export const sliderItems = [
         bg: 'fbf0f4',
     },
 ];
+
+export const categories = [
+    {
+        id: 1,
+        img: 'https://static.nike.com/a/images/t_default/616a8a2f-193d-437c-b336-b4df8eacf0d3/air-jordan-1-mid-se-shoes-pZbfP8.png',
+        title: "Men's Shoes",
+    },
+    {
+        id: 2,
+        img: 'https://static.nike.com/a/images/t_default/616a8a2f-193d-437c-b336-b4df8eacf0d3/air-jordan-1-mid-se-shoes-pZbfP8.png',
+        title: "Men's Shoes",
+    },
+    {
+        id: 3,
+        img: 'https://static.nike.com/a/images/t_default/85740f5e-b682-4e3a-a130-5477953c0022/jordan-series-es-shoes-FDtg9v.png',
+        title: "Women's Shoes",
+    },
+];
