@@ -9,8 +9,14 @@ import Newsletter from './../components/Newsletter';
 import Footer from './../components/Footer';
 
 const Container = styled.div`
-    background: rgb(63, 94, 251);
-    background: linear-gradient(52deg, rgba(63, 94, 251, 1) 0%, rgba(55, 182, 119, 1) 67%);
+    background: #0f2027; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2c5364, #203a43, #0f2027); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+        to right,
+        #2c5364,
+        #203a43,
+        #0f2027
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 `;
 
 const Home = () => {
