@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { popularProduct } from '../data';
 import Product from './Product';
 import Title from './Title';
+import { popularProduct } from './../data';
 
 const Container = styled.div`
     width: 100%;
