@@ -73,6 +73,8 @@ const ContactItem = styled.div`
     gap: 10px;
 `;
 
+const Payment = styled.img``;
+
 const Footer = () => {
     return (
         <Container>
@@ -130,6 +132,7 @@ const Footer = () => {
                     <Language />
                     Website: https://kuondev.com
                 </ContactItem>
+                <Payment src="https://i.ibb.co/Qfvn4z6/payment.png" />
             </Right>
         </Container>
     );
