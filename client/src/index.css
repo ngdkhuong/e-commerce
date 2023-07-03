@@ -6,3 +6,26 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
+
+/* navbar */
+.navbar {
+    font-size: 17px;
+    line-height: 26px;
+    text-transform: uppercase;
+    box-shadow: 0 8px 6px -6px gray;
+    --webkit-box-shadow: 0 8px 6px -6px gray;
+    border-bottom: solid gray !important;
+}
+
+.link {
+    font-weight: 300 !important;
+}
+
+.navbar {
+    border-bottom: 2px solid gray !important;
+}
+
+.footer .link:hover {
+    color: #ffefba;
+    border-bottom: 1px solid #ffefba;
+}
