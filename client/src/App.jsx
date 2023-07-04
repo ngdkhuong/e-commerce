@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import Container from './components/Container/Container';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -7,18 +6,18 @@ import Policy from './pages/Policy';
 import PageNotFound from './pages/PageNotFound';
 
 const App = () => {
-    const Layout = () => {
+    const LayoutClient = () => {
         return (
-            <Container>
+            <div className="app">
                 <Outlet />
-            </Container>
+            </div>
         );
     };
 
     const router = createBrowserRouter([
         {
             path: '/',
-            element: <Layout />,
+            element: <LayoutClient />,
             children: [
                 { path: '/', element: <Home /> },
                 { path: '/about', element: <About /> },
