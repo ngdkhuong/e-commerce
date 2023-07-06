@@ -4,6 +4,8 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Policy from './pages/Policy';
 import PageNotFound from './pages/PageNotFound';
+import Register from './pages/Auth/Register';
+import Login from './pages/Auth/Login';
 
 const App = () => {
     const LayoutClient = () => {
@@ -23,6 +25,8 @@ const App = () => {
                 { path: '/about', element: <About /> },
                 { path: '/contact', element: <Contact /> },
                 { path: '/policy', element: <Policy /> },
+                { path: '/register', element: <Register /> },
+                { path: '/login', element: <Login /> },
                 { path: '*', element: <PageNotFound /> },
             ],
         },
