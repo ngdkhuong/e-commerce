@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import Layout from './../../components/Layout/Layout';
+import newRequest from './../../utils/newRequest';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -9,9 +11,25 @@ const Register = () => {
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log({ name, email, password, phone, address });
+        try {
+            const res = await newRequest.post('/v1/auth/register', {
+                name,
+                email,
+                password,
+                phone,
+                address,
+            });
+            if (res.data.success) {
+                toast.success(res.data.message);
+            } else {
+                toast.error(res.data.message);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error('Something went wrong!');
+        }
     };
 
     return (

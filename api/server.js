@@ -2,6 +2,7 @@ import express from 'express';
 import colors from 'colors';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import cors from 'cors';
 
 // cookie
 import cookieParser from 'cookie-parser';
@@ -16,6 +17,7 @@ dotenv.config();
 const app = express();
 
 // middlewares
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
 app.use(morgan('dev'));
 

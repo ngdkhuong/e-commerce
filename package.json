@@ -1,0 +1,25 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client": "cd client && yarn run dev",
+    "api": "cd api && yarn run server",
+    "dev": "concurrently \"yarn run client\" \"yarn run api\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngdkhuong/e-commerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngdkhuong/e-commerce/issues"
+  },
+  "homepage": "https://github.com/ngdkhuong/e-commerce#readme",
+  "dependencies": {
+    "concurrently": "^8.2.0"
+  }
+}

@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
