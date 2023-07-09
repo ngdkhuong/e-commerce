@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -7,12 +6,16 @@ import Policy from './pages/Policy';
 import PageNotFound from './pages/PageNotFound';
 import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 const App = () => {
     const LayoutClient = () => {
         return (
             <div className="app">
+                <Header />
                 <Outlet />
+                <Footer />
             </div>
         );
     };

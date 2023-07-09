@@ -7,7 +7,7 @@ const Header = () => {
         <Navbar expand="lg" className="bg-body-tertiary navbar">
             <Container fluid style={{ position: 'sticky', maxWidth: '1200px' }}>
                 <Navbar.Brand as={Link} to="/">
-                    Ryan
+                    NICE
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">

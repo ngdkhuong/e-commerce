@@ -1,6 +1,6 @@
 import { Col, Container, Image, Row } from 'react-bootstrap';
 import Layout from '../components/Layout/Layout';
-import { BiMailSend, BiPhoneCall, BiSupport } from 'react-icons/bi';
+import { BiMailSend, BiPhoneCall } from 'react-icons/bi';
 import { AiFillGithub, AiFillLinkedin } from 'react-icons/ai';
 
 const Contact = () => {
