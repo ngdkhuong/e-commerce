@@ -6,11 +6,8 @@ import newRequest from './../../utils/newRequest';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
-    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
     // const [answer, setAnswer] = useState('');
     const navigate = useNavigate();
 
@@ -18,16 +15,13 @@ const Login = () => {
         e.preventDefault();
         try {
             const res = await newRequest.post('/v1/auth/login', {
-                name,
                 email,
                 password,
-                phone,
-                address,
                 // answer,
             });
             if (res && res.data.success) {
                 toast.success(res.data && res.data.message);
-                // navigate('/login');
+                navigate('/');
             } else {
                 toast.error(res.data.message);
             }
@@ -64,7 +58,7 @@ const Login = () => {
                         />
                     </FloatingLabel>
                     <div className="text-center my-3" style={{ fontSize: '14px', color: 'gray' }}>
-                        By logging in, you agree to Nice's{' '}
+                        By logging in, you agree to Nice{"'"}s{' '}
                         <Link to="/policy" style={{ color: '#000' }}>
                             Privacy Policy
                         </Link>

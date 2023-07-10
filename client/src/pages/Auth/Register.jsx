@@ -91,7 +91,7 @@ const Register = () => {
                         />
                     </FloatingLabel>
                     <div className="text-center my-3" style={{ fontSize: '14px', color: 'gray' }}>
-                        By creating an account, you agree to Nice's{' '}
+                        By creating an account, you agree to Nice{"'"}s{' '}
                         <Link to="/policy" style={{ color: '#000' }}>
                             Privacy Policy
                         </Link>

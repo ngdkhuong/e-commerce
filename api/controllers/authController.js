@@ -8,7 +8,7 @@ export const register = async (req, res, next) => {
         const { name, email, password, phone, address } = req.body;
         // validation
         if (!name || !email || !password || !phone || !address) {
-            return res.send({ error: 'Fields is Required' });
+            return res.send({ message: 'Fields is Required' });
         }
 
         // check user

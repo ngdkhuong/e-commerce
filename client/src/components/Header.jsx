@@ -36,7 +36,7 @@ const Header = () => {
                         </Form>
                     </Nav>
 
-                    <div>
+                    <div className="my-2">
                         <Link className="link" to="/login">
                             <Button className="me-2" variant="primary">
                                 Login
