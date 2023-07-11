@@ -8,12 +8,15 @@ import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
     const LayoutClient = () => {
         return (
             <div className="app">
                 <Header />
+                <ToastContainer />
                 <Outlet />
                 <Footer />
             </div>

@@ -1,14 +1,9 @@
 import React from 'react';
-import { Toaster } from 'react-hot-toast';
 
 const Layout = ({ children }) => {
     return (
         <React.Fragment>
-            <main style={{ minHeight: '70vh' }}>
-                <Toaster />
-
-                {children}
-            </main>
+            <main style={{ minHeight: '70vh' }}>{children}</main>
         </React.Fragment>
     );
 };

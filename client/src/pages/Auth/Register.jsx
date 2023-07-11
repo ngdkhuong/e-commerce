@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
-import toast from 'react-hot-toast';
 import Layout from './../../components/Layout/Layout';
 import newRequest from './../../utils/newRequest';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -26,7 +26,11 @@ const Register = () => {
                 // answer,
             });
             if (res && res.data.success) {
-                toast.success(res.data && res.data.message);
+                if (res.status === 200) {
+                    toast.warning(res.data && res.data.message);
+                } else if (res.status === 201) {
+                    toast.success(res.data && res.data.message);
+                }
                 navigate('/login');
             } else {
                 toast.error(res.data.message);
@@ -52,6 +56,7 @@ const Register = () => {
                             placeholder="Username"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            autoFocus
                         />
                     </FloatingLabel>
                     <FloatingLabel controlId="floatingEmail" label="Email address" className="mb-3">

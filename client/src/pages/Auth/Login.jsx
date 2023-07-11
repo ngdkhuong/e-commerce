@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
-import toast from 'react-hot-toast';
 import Layout from './../../components/Layout/Layout';
 import newRequest from './../../utils/newRequest';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [answer, setAnswer] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
