@@ -13,13 +13,14 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await newRequest.post('/v1/auth/login', {
+            const res = await newRequest.post('/auth/login', {
                 email,
                 password,
                 // answer,
             });
             if (res && res.data.success) {
                 toast.success(res.data && res.data.message);
+                localStorage.setItem('currentUser', JSON.stringify(res.data));
                 navigate('/');
             } else {
                 toast.error(res.data.message);

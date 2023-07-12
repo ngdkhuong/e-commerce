@@ -23,7 +23,7 @@ export const register = async (req, res, next) => {
         // register user
         const hashedPassword = await hashPassword(password);
         // save
-        const user = new User({ name, email, phone, address, password: hashedPassword }).save();
+        const user = new User({ ...req.body, password: hashedPassword }).save();
         res.status(201).send({
             success: true,
             message: 'User registered successfully',
@@ -78,18 +78,18 @@ export const login = async (req, res, next) => {
         });
     } catch (error) {
         console.log(error);
-        res.status(
-            500,
-            send({
-                success: false,
-                message: 'Error Login',
-                error,
-            }),
-        );
+        res.status(500).send({
+            success: false,
+            message: 'Error Login',
+            error,
+        });
     }
 };
 
-// TEST
-export const test = async (req, res) => {
-    res.send('protected route');
+// POST LOGOUT
+export const logout = async (req, res) => {
+    res.clearCookie('accessToken', { sameSite: 'none', secure: true }).status(200).send({
+        success: true,
+        message: 'You have been logged out!',
+    });
 };

@@ -31,7 +31,7 @@ const PORT = process.env.PORT;
 const MODE = process.env.DEV_MODE;
 
 // routes
-app.use('/api/v1/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 // rest api
 app.get('/', (req, res) => {

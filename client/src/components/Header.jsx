@@ -1,8 +1,25 @@
 import { Badge, Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BsFillBagFill } from 'react-icons/bs';
+import newRequest from '../utils/newRequest';
+import { toast } from 'react-toastify';
 
 const Header = () => {
+    const navigate = useNavigate();
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    const handleLogout = async () => {
+        const res = await newRequest.post('/auth/logout');
+        try {
+            localStorage.setItem('currentUser', null);
+            toast.success(res.data.message);
+            navigate('/');
+        } catch (error) {
+            toast.error(res.data.message);
+        }
+    };
+
     return (
         <Navbar expand="lg" className="bg-body-tertiary navbar">
             <Container fluid style={{ position: 'sticky', maxWidth: '1200px' }}>
@@ -36,18 +53,28 @@ const Header = () => {
                         </Form>
                     </Nav>
 
-                    <div className="my-2">
-                        <Link className="link" to="/login">
-                            <Button className="me-2" variant="primary">
-                                Login
-                            </Button>
-                        </Link>
-                        <Link className="link" to="/register">
-                            <Button className="me-2" variant="secondary">
-                                Register
-                            </Button>
-                        </Link>
-                    </div>
+                    {!currentUser ? (
+                        <div className="my-2">
+                            <Link className="link" to="/login">
+                                <Button className="me-2" variant="primary">
+                                    Login
+                                </Button>
+                            </Link>
+                            <Link className="link" to="/register">
+                                <Button className="me-2" variant="secondary">
+                                    Register
+                                </Button>
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className="my-2">
+                            <Link onClick={handleLogout} className="link" to="/logout">
+                                <Button className="me-2" variant="secondary">
+                                    Logout
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
                     <Link className="link " to="/cart" style={{ position: 'relative' }}>
                         <BsFillBagFill style={{ color: 'gray', fontSize: '24px', lineHeight: '26px' }} />
                         <Badge bg="primary" style={{ position: 'absolute', borderRadius: '50%', left: '50%' }}>

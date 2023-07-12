@@ -17,7 +17,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await newRequest.post('/v1/auth/register', {
+            const res = await newRequest.post('/auth/register', {
                 name,
                 email,
                 password,
