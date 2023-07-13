@@ -2,6 +2,11 @@ import { comparePassword, hashPassword } from '../helpers/authHelper.js';
 import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
 
+// GET Test
+export const test = () => {
+    res.send('test');
+};
+
 // POST REGISTER
 export const register = async (req, res, next) => {
     try {

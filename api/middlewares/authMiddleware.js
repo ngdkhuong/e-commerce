@@ -26,12 +26,15 @@ export const isAdmin = async (req, res, next) => {
         const user = await User.findById(req.user._id);
         // console.log(user);
         if (user.role !== 1) {
-            return res.status(401).send({
+            res.status(403).send({
                 success: false,
                 message: 'Unauthorized Access Admin!',
             });
         } else {
-            next();
+            res.status(200).send({
+                success: true,
+                message: 'Welcome to dashboard',
+            });
         }
     } catch (error) {
         console.log(error);

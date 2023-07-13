@@ -7,8 +7,6 @@ import { toast } from 'react-toastify';
 const Header = () => {
     const navigate = useNavigate();
 
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-
     const handleLogout = async () => {
         const res = await newRequest.post('/auth/logout');
         try {
