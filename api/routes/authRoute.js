@@ -15,7 +15,12 @@ router.post('/login', login);
 // LOGIN
 router.post('/logout', logout);
 
-// test router
-// router.get('/test', verifyToken, isAdmin, test);
+// protected router
+router.get('/test', verifyToken, isAdmin);
+
+// protected router
+router.get('/user-auth', verifyToken, (req, res) => {
+    res.status(200).send({ auth: true });
+});
 
 export default router;

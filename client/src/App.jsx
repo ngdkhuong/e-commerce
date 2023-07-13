@@ -8,6 +8,7 @@ import Register from './pages/Auth/Register';
 import Login from './pages/Auth/Login';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Dashboard from './pages/user/Dashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,6 +33,7 @@ const App = () => {
                 { path: '/about', element: <About /> },
                 { path: '/contact', element: <Contact /> },
                 { path: '/policy', element: <Policy /> },
+                { path: '/dashboard', element: <Dashboard /> },
                 { path: '/register', element: <Register /> },
                 { path: '/login', element: <Login /> },
                 { path: '*', element: <PageNotFound /> },
