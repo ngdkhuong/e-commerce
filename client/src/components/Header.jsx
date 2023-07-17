@@ -3,9 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { BsFillBagFill } from 'react-icons/bs';
 import newRequest from '../utils/newRequest';
 import { toast } from 'react-toastify';
+import getCurrentUser from '../utils/getCurrentUser';
 
 const Header = () => {
     const navigate = useNavigate();
+
+    const currentUser = getCurrentUser();
 
     const handleLogout = async () => {
         const res = await newRequest.post('/auth/logout');
@@ -69,10 +72,11 @@ const Header = () => {
                             <Dropdown>
                                 <Dropdown.Toggle id="dropdown-autoclose-true" variant="light">
                                     <Image
-                                        src={currentUser.img || '/images/noavatar.jpg'}
+                                        src={currentUser.user.img || '/images/noavatar.jpg'}
                                         roundedCircle
                                         style={{ width: '32px', height: '32px' }}
-                                    ></Image>
+                                    />
+                                    <span className="mx-2">{currentUser.user.name}</span>
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>

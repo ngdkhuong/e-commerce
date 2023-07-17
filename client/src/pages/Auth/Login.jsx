@@ -12,6 +12,7 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
             const res = await newRequest.post('/auth/login', {
                 email,
@@ -22,12 +23,15 @@ const Login = () => {
                 toast.success(res.data && res.data.message);
                 localStorage.setItem('currentUser', JSON.stringify(res.data));
                 navigate('/');
-            } else {
-                toast.error(res.data.message);
             }
         } catch (error) {
             console.log(error);
-            toast.error('Something went wrong!');
+            if (error.response.status === 401) {
+                toast.warning(error.response.data.message);
+            }
+            if (error.response.status === 404) {
+                toast.info(error.response.data.message);
+            }
         }
     };
 

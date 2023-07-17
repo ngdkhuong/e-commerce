@@ -28,16 +28,15 @@ const Register = () => {
             if (res && res.data.success) {
                 if (res.status === 200) {
                     toast.warning(res.data && res.data.message);
-                } else if (res.status === 201) {
+                }
+                if (res.status === 201) {
                     toast.success(res.data && res.data.message);
                 }
                 navigate('/login');
-            } else {
-                toast.error(res.data.message);
             }
         } catch (error) {
             console.log(error);
-            toast.error('Something went wrong!');
+            toast.error(error.response.data.message);
         }
     };
 
