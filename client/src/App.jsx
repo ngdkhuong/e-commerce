@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import Dashboard from './pages/user/Dashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
     const LayoutClient = () => {
@@ -33,7 +34,14 @@ const App = () => {
                 { path: '/about', element: <About /> },
                 { path: '/contact', element: <Contact /> },
                 { path: '/policy', element: <Policy /> },
-                { path: '/dashboard', element: <Dashboard /> },
+                {
+                    path: '/dashboard',
+                    element: (
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    ),
+                },
                 { path: '/register', element: <Register /> },
                 { path: '/login', element: <Login /> },
                 { path: '*', element: <PageNotFound /> },

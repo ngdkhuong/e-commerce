@@ -18,7 +18,10 @@ router.post('/logout', logout);
 // protected router
 router.get('/test', verifyToken, isAdmin, test);
 
-// protected router
+// Admin protected router
 router.get('/admin-auth', verifyToken, isAdmin);
+
+// User protected router
+router.get('/user-auth', verifyToken);
 
 export default router;

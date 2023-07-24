@@ -36,6 +36,7 @@ export const isAdmin = async (req, res, next) => {
                 message: 'Welcome to dashboard',
             });
         }
+        next();
     } catch (error) {
         console.log(error);
         res.status(401).send({
