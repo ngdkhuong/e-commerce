@@ -1,22 +1,30 @@
 import { Outlet } from 'react-router-dom';
 import newRequest from '../utils/newRequest';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Loading from './Loading';
+import { toast } from 'react-toastify';
+import getCurrentUser from '../utils/getCurrentUser';
 
 const ProtectedRoute = () => {
     const [success, setSuccess] = useState(false);
+    const currentUser = getCurrentUser();
 
-    async () => {
-        try {
+    useEffect(() => {
+        const authCheck = async () => {
             const res = await newRequest.get('/auth/admin-auth');
-            if (res && res.data.success) {
-                localStorage.setItem('currentUser', JSON.stringify(res.data));
-                if (res.data.user.role === 1) return setSuccess(true);
+            try {
+                if (res.data.success) {
+                    localStorage.setItem('currentUser', JSON.stringify(res.data));
+                    toast.success(res.data && res.data.message);
+                    setSuccess(true);
+                }
+            } catch (error) {
+                setSuccess(false);
             }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+        };
+
+        if (currentUser) authCheck();
+    }, [currentUser]);
 
     return success ? <Outlet /> : <Loading />;
 };

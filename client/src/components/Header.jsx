@@ -72,11 +72,11 @@ const Header = () => {
                             <Dropdown>
                                 <Dropdown.Toggle id="dropdown-autoclose-true" variant="light">
                                     <Image
-                                        src={currentUser.user.img || '/images/noavatar.jpg'}
+                                        src={currentUser.user || '/images/noavatar.jpg'}
                                         roundedCircle
                                         style={{ width: '32px', height: '32px' }}
                                     />
-                                    <span className="mx-2">{currentUser.user.name}</span>
+                                    <span className="mx-2">{currentUser.user}</span>
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>

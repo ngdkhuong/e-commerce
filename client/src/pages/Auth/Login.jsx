@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
 import Layout from './../../components/Layout/Layout';
 import newRequest from './../../utils/newRequest';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +24,7 @@ const Login = () => {
             if (res && res.data.success) {
                 toast.success(res.data && res.data.message);
                 localStorage.setItem('currentUser', JSON.stringify(res.data));
-                navigate('/');
+                navigate(location.state || '/');
             }
         } catch (error) {
             console.log(error);
