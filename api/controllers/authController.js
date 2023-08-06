@@ -69,6 +69,7 @@ export const login = async (req, res, next) => {
             success: true,
             message: 'Login successfully!',
             user: {
+                // except PASSWORD
                 _id: user._id,
                 name: user.name,
                 email: user.email,
@@ -76,6 +77,7 @@ export const login = async (req, res, next) => {
                 address: user.address,
                 role: user.role,
             },
+            // token,
         });
     } catch (error) {
         console.log(error);
