@@ -96,3 +96,44 @@ export const logout = async (req, res) => {
         message: 'You have been logged out!',
     });
 };
+
+// POST FORGOT PASSWORD
+export const forgotPassword = async (req, res) => {
+    try {
+        const { email, answer, newPassword } = req.body;
+        if (!email) {
+            res.status(400).send({ message: 'Email is required' });
+        }
+        if (!answer) {
+            res.status(400).send({ message: 'Answer is required' });
+        }
+        if (!newPassword) {
+            res.status(400).send({ message: 'New password is required' });
+        }
+
+        // check user
+        const user = await User.findOne({ email, answer });
+
+        // validation
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: 'Wrong Email or Answer',
+            });
+        }
+
+        const hashedNewPassword = await hashPassword(newPassword);
+        await User.findByIdAndUpdate(user._id, { password: hashedNewPassword });
+        res.status(20).send({
+            success: true,
+            message: 'Password changed successfully',
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: 'Something went wrong',
+            error,
+        });
+    }
+};

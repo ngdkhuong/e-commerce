@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, register, logout, test } from '../controllers/authController.js';
+import { login, register, logout, test, forgotPassword } from '../controllers/authController.js';
 import { isAdmin, verifyToken } from '../middlewares/authMiddleware.js';
 
 // router object
@@ -17,6 +17,9 @@ router.post('/logout', logout);
 
 // protected router
 router.get('/test', verifyToken, isAdmin, test);
+
+// Forgot Password || POST
+router.post('/forgot-password', forgotPassword);
 
 // Admin protected router
 router.get('/admin-auth', verifyToken, isAdmin);
