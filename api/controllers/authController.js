@@ -100,19 +100,8 @@ export const logout = async (req, res) => {
 // POST FORGOT PASSWORD
 export const forgotPassword = async (req, res) => {
     try {
-        const { email, answer, newPassword } = req.body;
-        if (!email) {
-            res.status(400).send({ message: 'Email is required' });
-        }
-        if (!answer) {
-            res.status(400).send({ message: 'Answer is required' });
-        }
-        if (!newPassword) {
-            res.status(400).send({ message: 'New password is required' });
-        }
-
         // check user
-        const user = await User.findOne({ email, answer });
+        const user = await User.findOne({ email: req.body.email });
 
         // validation
         if (!user) {

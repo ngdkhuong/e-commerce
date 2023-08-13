@@ -63,6 +63,9 @@ const Login = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </FloatingLabel>
+                    <div>
+                        <Link to="/forgot-password">Forgot Password ?</Link>
+                    </div>
                     <div className="text-center my-3" style={{ fontSize: '14px', color: 'gray' }}>
                         By logging in, you agree to Nice{"'"}s{' '}
                         <Link to="/policy" style={{ color: '#000' }}>

@@ -11,7 +11,6 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
-    // const [answer, setAnswer] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -23,7 +22,6 @@ const Register = () => {
                 password,
                 phone,
                 address,
-                // answer,
             });
             if (res && res.data.success) {
                 if (res.status === 200) {
@@ -44,7 +42,7 @@ const Register = () => {
         <Layout title={'Register'}>
             <Container
                 className="d-flex justify-content-center align-items-center flex-column my-5"
-                style={{ maxWidth: '1200px', height: '70vh' }}
+                style={{ maxWidth: '1200px', height: '80vh' }}
             >
                 <h4 className="mb-3">BECOME A MEMBER</h4>
                 <Form onSubmit={handleSubmit} style={{ width: '400px' }}>
@@ -52,7 +50,7 @@ const Register = () => {
                         <Form.Control
                             required
                             type="text"
-                            placeholder="Username"
+                            placeholder=""
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             autoFocus
@@ -62,7 +60,7 @@ const Register = () => {
                         <Form.Control
                             required
                             type="email"
-                            placeholder="name@example.com"
+                            placeholder=""
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -71,7 +69,7 @@ const Register = () => {
                         <Form.Control
                             required
                             type="password"
-                            placeholder="Password"
+                            placeholder=""
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
@@ -80,7 +78,7 @@ const Register = () => {
                         <Form.Control
                             required
                             type="text"
-                            placeholder="0123456789"
+                            placeholder=""
                             value={phone}
                             onChange={(e) => setPhone(e.target.value)}
                         />
@@ -89,7 +87,7 @@ const Register = () => {
                         <Form.Control
                             required
                             type="text"
-                            placeholder="Vietnam"
+                            placeholder=""
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                         />

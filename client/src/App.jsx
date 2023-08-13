@@ -12,6 +12,7 @@ import Dashboard from './pages/user/Dashboard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoute from './components/ProtectedRoute';
+import ForgotPassword from './pages/Auth/ForgotPassword';
 
 const App = () => {
     const LayoutClient = () => {
@@ -43,6 +44,7 @@ const App = () => {
                     ),
                 },
                 { path: '/register', element: <Register /> },
+                { path: '/forgot-password', element: <ForgotPassword /> },
                 { path: '/login', element: <Login /> },
                 { path: '*', element: <PageNotFound /> },
             ],
