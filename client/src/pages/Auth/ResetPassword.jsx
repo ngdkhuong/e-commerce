@@ -2,14 +2,34 @@ import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import { useState } from 'react';
+import newRequest from '../../utils/newRequest';
+import { toast } from 'react-toastify';
 
-const ForgotPassword = () => {
-    const [email, setEmail] = useState('');
+const ResetPassword = () => {
+    const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
+    // const location = useLocation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        try {
+            const res = await newRequest.post('/auth/password', { password });
+            if (res && res.data.success) {
+                toast.success(res.data && res.data.message);
+                localStorage.setItem('currentUser', JSON.stringify(res.data));
+                navigate(location.state || '/');
+            }
+        } catch (error) {
+            console.log(error);
+            if (error.response.status === 401) {
+                toast.warning(error.response.data.message);
+            }
+            if (error.response.status === 404) {
+                toast.info(error.response.data.message);
+            }
+        }
     };
     return (
         <Layout title={'Login'}>
@@ -20,13 +40,13 @@ const ForgotPassword = () => {
                 <h4 className="mb-3">RESET PASSWORD</h4>
                 <span>Enter your email to receive instructions on how to reset your password.</span>
                 <Form onSubmit={handleSubmit} style={{ width: '400px' }}>
-                    <FloatingLabel controlId="floatingEmail" label="Email" className="mb-3">
+                    <FloatingLabel controlId="floatingEmail" label="Password" className="mb-3">
                         <Form.Control
                             required
-                            type="email"
+                            type="password"
                             placeholder="name@example.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </FloatingLabel>
                     <Button variant="dark" type="submit" className="w-100 mb-3">
@@ -44,4 +64,4 @@ const ForgotPassword = () => {
     );
 };
 
-export default ForgotPassword;
+export default ResetPassword;

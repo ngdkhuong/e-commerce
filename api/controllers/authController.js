@@ -1,6 +1,7 @@
 import { comparePassword, hashPassword } from '../helpers/authHelper.js';
 import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
+import sendVerificationMail from '../utils/sendVerificationMail.js';
 
 // GET Test
 export const test = () => {
@@ -28,7 +29,11 @@ export const register = async (req, res, next) => {
         // register user
         const hashedPassword = await hashPassword(password);
         // save
-        const user = new User({ ...req.body, password: hashedPassword }).save();
+        const user = new User({
+            ...req.body,
+            emailToken: crypto.randomBytes(64).toString('hex'),
+            password: hashedPassword,
+        }).save();
         res.status(201).send({
             success: true,
             message: 'User registered successfully',
@@ -100,8 +105,28 @@ export const logout = async (req, res) => {
 // POST FORGOT PASSWORD
 export const forgotPassword = async (req, res) => {
     try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+
+        const token = generateToken(res, email);
+
+        mailer(user, token);
+
+        res.status(200).send({
+            success: true,
+            message: 'Check your mail for resetting the password',
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// POST RESET PASSWORD
+export const resetPassword = async (req, res) => {
+    try {
         // check user
-        const user = await User.findOne({ email: req.body.email });
+        const { email } = req.body;
+        const user = await User.findOne({ email: email });
 
         // validation
         if (!user) {
@@ -113,7 +138,7 @@ export const forgotPassword = async (req, res) => {
 
         const hashedNewPassword = await hashPassword(newPassword);
         await User.findByIdAndUpdate(user._id, { password: hashedNewPassword });
-        res.status(20).send({
+        res.status(200).send({
             success: true,
             message: 'Password changed successfully',
         });

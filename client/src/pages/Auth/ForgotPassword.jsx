@@ -1,15 +1,28 @@
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import { useState } from 'react';
+import newRequest from '../../utils/newRequest';
+import { toast } from 'react-toastify';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
 
     const navigate = useNavigate();
+    // const location = useLocation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        try {
+            const res = await newRequest.post('/auth/forgot-password', { email });
+            if (res.data.success) {
+                toast.success(res.data.message);
+                navigate('/reset-password');
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
     return (
         <Layout title={'Login'}>
@@ -32,13 +45,13 @@ const ForgotPassword = () => {
                     <Button variant="dark" type="submit" className="w-100 mb-3">
                         SEND
                     </Button>
-                    <div className="text-center" style={{ fontSize: '14px', color: 'gray' }}>
-                        Or return to{' '}
-                        <Link to="/login" style={{ color: '#000' }}>
-                            Login
-                        </Link>
-                    </div>
                 </Form>
+                <div className="text-center" style={{ fontSize: '14px', color: 'gray' }}>
+                    Or return to{' '}
+                    <Link to="/login" style={{ color: '#000' }}>
+                        Login
+                    </Link>
+                </div>
             </Container>
         </Layout>
     );
