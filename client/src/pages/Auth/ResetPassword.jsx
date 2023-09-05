@@ -1,21 +1,22 @@
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import { useState } from 'react';
 import newRequest from '../../utils/newRequest';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('');
-
     const navigate = useNavigate();
-    // const location = useLocation();
+    const { id, token } = useParams();
 
+    axios.defaults.withCredentials = true;
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const res = await newRequest.post('/auth/password', { password });
+            const res = await newRequest.post(`/auth/reset-password${id}/${token}`, { password });
             if (res && res.data.success) {
                 toast.success(res.data && res.data.message);
                 localStorage.setItem('currentUser', JSON.stringify(res.data));

@@ -9,7 +9,6 @@ const ForgotPassword = () => {
     const [email, setEmail] = useState('');
 
     const navigate = useNavigate();
-    // const location = useLocation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,7 +46,7 @@ const ForgotPassword = () => {
                     </Button>
                 </Form>
                 <div className="text-center" style={{ fontSize: '14px', color: 'gray' }}>
-                    Or return to{' '}
+                    Have an Account ?{' '}
                     <Link to="/login" style={{ color: '#000' }}>
                         Login
                     </Link>

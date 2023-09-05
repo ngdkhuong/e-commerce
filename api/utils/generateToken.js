@@ -10,4 +10,13 @@ const generateToken = (res, userId) => {
     });
 };
 
-export default generateToken;
+const refreshToken = (res, userId) => {
+    const token = JWT.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
+
+    return res.cookie('refreshToken', token, {
+        httpOnly: true,
+        secure: process.env.DEV_MODE !== 'development',
+    });
+};
+
+export { generateToken, refreshToken };

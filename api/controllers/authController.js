@@ -1,7 +1,7 @@
 import { comparePassword, hashPassword } from '../helpers/authHelper.js';
 import User from '../models/User.js';
-import generateToken from '../utils/generateToken.js';
-import sendVerificationMail from '../utils/sendVerificationMail.js';
+import { generateToken } from '../utils/generateToken.js';
+import jwt from 'jsonwebtoken';
 
 // GET Test
 export const test = () => {
@@ -31,7 +31,6 @@ export const register = async (req, res, next) => {
         // save
         const user = new User({
             ...req.body,
-            emailToken: crypto.randomBytes(64).toString('hex'),
             password: hashedPassword,
         }).save();
         res.status(201).send({
@@ -106,11 +105,42 @@ export const logout = async (req, res) => {
 export const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: email });
 
-        const token = generateToken(res, email);
+        if (!user) {
+            return res.json(404).send({
+                success: false,
+                message: 'User not existed',
+            });
+        }
 
-        mailer(user, token);
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+
+        const transporter = nodeMailer.createTransport({
+            service: 'gmail',
+            secure: true,
+            auth: {
+                user: process.env.MAIL_FROM_ADDRESS,
+                pass: process.env.EMAIL_PASS,
+            },
+        });
+
+        const mailOptions = {
+            from: 'Nice Shop ✔',
+            subject: 'Reset Password',
+            text: `http://localhost:5173/reset-password/${user._id}/${token}`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+            } else {
+                return res.json(201).json({
+                    success: true,
+                    message: 'you should receive an email',
+                });
+            }
+        });
 
         res.status(200).send({
             success: true,
