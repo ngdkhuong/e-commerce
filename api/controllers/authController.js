@@ -1,6 +1,6 @@
 import { comparePassword, hashPassword } from '../helpers/authHelper.js';
 import User from '../models/User.js';
-import { generateToken } from '../utils/generateToken.js';
+import { generateToken, refreshToken } from '../utils/generateToken.js';
 import jwt from 'jsonwebtoken';
 
 // GET Test
@@ -105,79 +105,21 @@ export const logout = async (req, res) => {
 export const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
-        const user = await User.findOne({ email: email });
 
-        if (!user) {
-            return res.json(404).send({
-                success: false,
-                message: 'User not existed',
-            });
-        }
+        const user = await User.findOne({ email });
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-
-        const transporter = nodeMailer.createTransport({
-            service: 'gmail',
-            secure: true,
-            auth: {
-                user: process.env.MAIL_FROM_ADDRESS,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
-
-        const mailOptions = {
-            from: 'Nice Shop ✔',
-            subject: 'Reset Password',
-            text: `http://localhost:5173/reset-password/${user._id}/${token}`,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log(error);
-            } else {
-                return res.json(201).json({
-                    success: true,
-                    message: 'you should receive an email',
-                });
-            }
-        });
-
-        res.status(200).send({
-            success: true,
-            message: 'Check your mail for resetting the password',
-        });
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-// POST RESET PASSWORD
-export const resetPassword = async (req, res) => {
-    try {
-        // check user
-        const { email } = req.body;
-        const user = await User.findOne({ email: email });
-
-        // validation
         if (!user) {
             return res.status(404).send({
                 success: false,
-                message: 'Wrong Email or Answer',
+                message: 'Invalid email',
             });
         }
 
-        const hashedNewPassword = await hashPassword(newPassword);
-        await User.findByIdAndUpdate(user._id, { password: hashedNewPassword });
+        refreshToken(res, email);
+
         res.status(200).send({
             success: true,
-            message: 'Password changed successfully',
+            message: 'Please check your email for validation',
         });
-    } catch (error) {
-        console.log(error);
-        res.status(500).send({
-            success: false,
-            message: 'Something went wrong',
-            error,
-        });
-    }
+    } catch (error) {}
 };

@@ -1,5 +1,5 @@
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import { useState } from 'react';
 import newRequest from '../../utils/newRequest';
