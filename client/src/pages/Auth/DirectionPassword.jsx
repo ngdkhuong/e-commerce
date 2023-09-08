@@ -1,12 +1,12 @@
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import { useState } from 'react';
 import newRequest from '../../utils/newRequest';
 import { toast } from 'react-toastify';
 
-const ForgotPassword = () => {
-    const [email, setEmail] = useState('');
+const DirectionPassword = () => {
+    const { id, token } = useParams();
 
     const navigate = useNavigate();
 
@@ -14,10 +14,9 @@ const ForgotPassword = () => {
         e.preventDefault();
 
         try {
-            const res = await newRequest.post('/auth/forgot-password', { email });
+            const res = await newRequest.get(`/auth/reset-password/${id}/${token}`);
             if (res.data.success) {
                 toast.success(res.data.message);
-                navigate('/');
             }
         } catch (error) {
             console.log(error);
@@ -57,4 +56,4 @@ const ForgotPassword = () => {
     );
 };
 
-export default ForgotPassword;
+export default DirectionPassword;

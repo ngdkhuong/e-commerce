@@ -16,11 +16,10 @@ const ResetPassword = () => {
         e.preventDefault();
 
         try {
-            const res = await newRequest.post(`/auth/reset-password${id}/${token}`, { password });
+            const res = await newRequest.post(`/auth/reset-password/${id}/${token}`, { password });
             if (res && res.data.success) {
                 toast.success(res.data && res.data.message);
                 localStorage.setItem('currentUser', JSON.stringify(res.data));
-                navigate(location.state || '/');
             }
         } catch (error) {
             console.log(error);

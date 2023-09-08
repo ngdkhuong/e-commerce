@@ -2,6 +2,7 @@ import { comparePassword, hashPassword } from '../helpers/authHelper.js';
 import User from '../models/User.js';
 import { generateToken, refreshToken } from '../utils/generateToken.js';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
 
 // GET Test
 export const test = () => {
@@ -115,11 +116,59 @@ export const forgotPassword = async (req, res) => {
             });
         }
 
-        refreshToken(res, email);
+        const token = refreshToken(res, email);
+
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.MAIL_FROM_ADDRESS,
+                pass: process.env.MAIL_PASSWORD,
+            },
+        });
+
+        var mailOptions = {
+            from: process.env.MAIL_FROM_ADDRESS,
+            to: email,
+            subject: 'Reset Password Link',
+            html: `<a href="${process.env.CLIENT_URL}/reset-password/${user._id}/${token}">Reset Password</a>`,
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
 
         res.status(200).send({
             success: true,
             message: 'Please check your email for validation',
         });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: 'Something went wrong',
+        });
+    }
+};
+
+export const resetPassword = async (req, res) => {
+    try {
+        const { id, token } = req.params;
+        const { password } = req.body;
+
+        const user = await User.findOne({ _id: id });
+
+        if (!user) {
+            return res.status(404).send({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+        try {
+        } catch (error) {}
     } catch (error) {}
 };
