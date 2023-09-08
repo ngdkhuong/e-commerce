@@ -8,8 +8,6 @@ import { toast } from 'react-toastify';
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
 
-    const navigate = useNavigate();
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -17,7 +15,6 @@ const ForgotPassword = () => {
             const res = await newRequest.post('/auth/forgot-password', { email });
             if (res.data.success) {
                 toast.success(res.data.message);
-                navigate('/');
             }
         } catch (error) {
             console.log(error);
