@@ -22,7 +22,7 @@ router.get('/test', verifyToken, isAdmin, test);
 router.post('/forgot-password', forgotPassword);
 
 // Reset Password || POST
-router.post('/reset-password/:id/:token', verifyToken, resetPassword);
+router.get('/reset-password/:token', resetPassword);
 
 // Admin protected router
 router.get('/admin-auth', verifyToken, isAdmin);

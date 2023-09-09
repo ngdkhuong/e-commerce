@@ -14,7 +14,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoute from './components/ProtectedRoute';
 import ForgotPassword from './pages/Auth/ForgotPassword';
 import ResetPassword from './pages/Auth/ResetPassword';
-import DirectionPassword from './pages/Auth/DirectionPassword';
 
 const App = () => {
     const LayoutClient = () => {
@@ -47,8 +46,7 @@ const App = () => {
                 },
                 { path: '/register', element: <Register /> },
                 { path: '/forgot-password', element: <ForgotPassword /> },
-                { path: '/reset-password', element: <ResetPassword /> },
-                { path: '/direction', element: <DirectionPassword /> },
+                { path: '/reset-password/:token', element: <ResetPassword /> },
                 { path: '/login', element: <Login /> },
                 { path: '*', element: <PageNotFound /> },
             ],
