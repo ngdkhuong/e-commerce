@@ -4,6 +4,7 @@ import { generateToken, refreshToken } from '../utils/generateToken.js';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+import { mailer } from '../utils/mailer.js';
 
 // GET Test
 export const test = () => {
@@ -68,8 +69,9 @@ export const login = async (req, res, next) => {
                 message: 'Invalid email or password',
             });
         }
+
         // Generate Token When Successfully
-        const token = generateToken(res, user._id);
+        generateToken(res, user._id);
 
         res.status(200).send({
             success: true,
@@ -82,7 +84,6 @@ export const login = async (req, res, next) => {
                 phone: user.phone,
                 address: user.address,
                 role: user.role,
-                token,
             },
         });
     } catch (error) {
@@ -107,71 +108,31 @@ export const logout = async (req, res) => {
 export const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
-        const token = crypto.randomBytes(20).toString('hex');
 
-        // Find the user by email and update their resetToken field
-        const user = await User.findOne(
-            { email: email },
-            // { token: token },
-            // { new: true }, // This option returns the updated document
-        );
+        const user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(404).send({
+            res.status(404).send({
                 success: false,
                 message: 'User not found',
             });
         }
 
-        // Create a reset link using the token
-        const resetLink = `http://localhost:5173/reset-password/${token}`;
+        // Generate a unique token
+        const token = crypto.randomBytes(20).toString('hex');
 
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.MAIL_FROM_ADDRESS,
-                pass: process.env.MAIL_PASSWORD,
-            },
-        });
-
-        var mailOptions = {
-            from: process.env.MAIL_FROM_ADDRESS,
-            to: email,
-            subject: 'Reset Password Link',
-            html: `
-            <p>You are receiving this email because you (or someone else) have requested a password reset for your account.</p>
-            <p>Please click the following link to reset your password:</p>
-            <a href="${resetLink}">Reset Password</a>
-            <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
-          `,
-        };
-
-        transporter.sendMail(mailOptions, function (error, info) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
-            }
-        });
-
-        res.redirect('/login');
+        mailer(email, token);
 
         res.status(200).send({
             success: true,
-            message: 'Please check your email for validation',
+            message: 'You should a mail for reset password',
         });
-    } catch (error) {
-        console.log(error);
-        res.status(500).send({
-            success: false,
-            message: 'Something went wrong',
-        });
-    }
+    } catch (error) {}
 };
 
 export const resetPassword = async (req, res) => {
     try {
-        const token = req.params.token;
+        const { token } = req.params;
         // const { id, token } = req.params;
         const { password } = req.body;
 
