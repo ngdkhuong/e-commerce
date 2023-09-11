@@ -24,6 +24,9 @@ router.post('/forgot-password', forgotPassword);
 // Reset Password || POST
 router.get('/reset-password/:token', resetPassword);
 
+// Reset Password || POST
+router.post('/reset-password/:token', resetPassword);
+
 // Admin protected router
 router.get('/admin-auth', verifyToken, isAdmin);
 

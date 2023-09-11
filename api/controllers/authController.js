@@ -3,8 +3,6 @@ import User from '../models/User.js';
 import { generateToken, refreshToken } from '../utils/generateToken.js';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
-import crypto from 'crypto';
-import { mailer } from '../utils/mailer.js';
 
 // GET Test
 export const test = () => {
@@ -119,46 +117,77 @@ export const forgotPassword = async (req, res) => {
         }
 
         // Generate a unique token
-        const token = crypto.randomBytes(20).toString('hex');
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '15m' });
 
-        mailer(email, token);
+        const transporter = nodemailer.createTransport({
+            host: process.env.MAIL_HOST,
+            port: 465, // SMTP over SSL
+            secureConnection: true, // use TLS
+            auth: {
+                user: process.env.MAIL_FROM_ADDRESS,
+                pass: process.env.MAIL_PASSWORD,
+            },
+        });
+
+        // let resetLink = `http://localhost:5173/reset-password/${token}`;
+
+        const mailOptions = {
+            to: email,
+            subject: 'Password Reset Request',
+            html: `Click the following link to reset your password: <a href="http://localhost:5173/reset-password/${token}">Reset Link</a>`,
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log('Reset email sent: ' + info.response);
+            }
+        });
 
         res.status(200).send({
             success: true,
             message: 'You should a mail for reset password',
         });
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            message: 'Something went wrong',
+            error,
+        });
+    }
 };
 
+// POST RESET PASSWORD
 export const resetPassword = async (req, res) => {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
     try {
-        const { token } = req.params;
-        // const { id, token } = req.params;
-        const { password } = req.body;
+        // Verify the token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        console.log(token);
+        // Find the user by userId from the token
+        const user = await User.findById(decoded.userId);
 
-        try {
-            // password
-            if (password && password.length < 6) {
-                return res.json({ error: 'password must be at least 6 characters' });
-            }
-
-            const hashedPassword = password ? await hashPassword(password) : undefined;
-            const updatedPassword = await User.findByIdAndUpdate(req.user._id, { hashedPassword });
-
-            res.status(200).send({
-                success: true,
-                message: 'Profile Updated Successfully',
-                updatedPassword,
-            });
-        } catch (error) {
-            console.log(error);
-            res.status(500).send({
-                success: false,
-                message: 'Profile Updated Error',
-                error,
-            });
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
         }
-    } catch (error) {}
+
+        // Hash the new password
+        const hashedPassword = await hashPassword(newPassword);
+
+        // Update the user's password
+        user.password = hashedPassword;
+        await user.save();
+
+        return res.status(200).send({ success: true, message: 'Password reset successfully' });
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(400).json({ error: 'Token has expired' });
+        }
+        console.log(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 };

@@ -1,45 +1,38 @@
 import { Button, Container, FloatingLabel, Form } from 'react-bootstrap';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
 import { useState } from 'react';
 import newRequest from '../../utils/newRequest';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-// import useForm from 'react-hook-form';
 
 const ResetPassword = () => {
     // const { register, errors, watch } = useForm({});
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
-    const { id, token } = useParams();
+    const { token } = useParams();
 
     axios.defaults.withCredentials = true;
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            return toast('Passwords do not match');
+            return toast('Password do not match');
         }
 
         try {
             const res = await newRequest.post(`/auth/reset-password/${token}`, { password });
             if (res && res.data.success) {
                 toast.success(res.data && res.data.message);
-                localStorage.setItem('currentUser', JSON.stringify(res.data));
+                navigate('/login');
             }
         } catch (error) {
             console.log(error);
-            if (error.response.status === 401) {
-                toast.warning(error.response.data.message);
-            }
-            if (error.response.status === 404) {
-                toast.info(error.response.data.message);
-            }
         }
     };
     return (
-        <Layout title={'Login'}>
+        <Layout title={'Reset Password'}>
             <Container
                 className="d-flex justify-content-center align-items-center flex-column"
                 style={{ maxWidth: '1200px', height: '70vh' }}
@@ -51,7 +44,7 @@ const ResetPassword = () => {
                         <Form.Control
                             required
                             type="password"
-                            placeholder="name@example.com"
+                            placeholder="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             // ref={register({
@@ -68,7 +61,7 @@ const ResetPassword = () => {
                         <Form.Control
                             required
                             type="password"
-                            placeholder="name@example.com"
+                            placeholder="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             // ref={register({
@@ -78,14 +71,8 @@ const ResetPassword = () => {
                         {/* {errors.password_repeat && <p>{errors.password_repeat.message}</p>} */}
                     </FloatingLabel>
                     <Button variant="dark" type="submit" className="w-100 mb-3">
-                        SEND
+                        UPDATE
                     </Button>
-                    <div className="text-center" style={{ fontSize: '14px', color: 'gray' }}>
-                        Or return to{' '}
-                        <Link to="/login" style={{ color: '#000' }}>
-                            Login
-                        </Link>
-                    </div>
                 </Form>
             </Container>
         </Layout>

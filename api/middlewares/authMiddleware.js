@@ -5,9 +5,7 @@ import User from '../models/User.js';
 export const verifyToken = async (req, res, next) => {
     let token;
 
-    token = req.cookies.accessToken;
-
-    if (token) {
+    if (token === req.cookies.accessToken || token === req.cookies.refreshToken) {
         try {
             // ? chuyển mã token sang object
             const decoded = JWT.verify(token, process.env.JWT_SECRET);
