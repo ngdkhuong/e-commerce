@@ -1,8 +1,8 @@
 import { comparePassword, hashPassword } from '../helpers/authHelper.js';
 import User from '../models/User.js';
-import { generateToken, refreshToken } from '../utils/generateToken.js';
+import { generateResetToken, generateToken } from '../utils/generateToken.js';
 import jwt from 'jsonwebtoken';
-import nodemailer from 'nodemailer';
+import { mailer } from '../utils/mailer.js';
 
 // GET Test
 export const test = () => {
@@ -116,34 +116,13 @@ export const forgotPassword = async (req, res) => {
             });
         }
 
-        // Generate a unique token
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '15m' });
+        // Generate a reset token and store it
+        const token = generateResetToken(user._id);
 
-        const transporter = nodemailer.createTransport({
-            host: process.env.MAIL_HOST,
-            port: 465, // SMTP over SSL
-            secureConnection: true, // use TLS
-            auth: {
-                user: process.env.MAIL_FROM_ADDRESS,
-                pass: process.env.MAIL_PASSWORD,
-            },
-        });
-
-        // let resetLink = `http://localhost:5173/reset-password/${token}`;
-
-        const mailOptions = {
-            to: email,
-            subject: 'Password Reset Request',
-            html: `Click the following link to reset your password: <a href="http://localhost:5173/reset-password/${token}">Reset Link</a>`,
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.error(error);
-            } else {
-                console.log('Reset email sent: ' + info.response);
-            }
-        });
+        // Generate a reset token and store it
+        if (token) {
+            mailer(email, token);
+        }
 
         res.status(200).send({
             success: true,
@@ -161,15 +140,14 @@ export const forgotPassword = async (req, res) => {
 
 // POST RESET PASSWORD
 export const resetPassword = async (req, res) => {
-    const { token } = req.params;
-    const { newPassword } = req.body;
-
     try {
+        const { token } = req.params;
+        const { newPassword } = req.body;
         // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         // Find the user by userId from the token
-        const user = await User.findById(decoded.userId);
+        const user = await User.findById(decoded._id);
 
         if (!user) {
             return res.status(404).send({ message: 'User not found' });

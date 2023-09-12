@@ -21,15 +21,15 @@ const ResetPassword = () => {
             return toast('Password do not match');
         }
 
-        try {
-            const res = await newRequest.post(`/auth/reset-password/${token}`, { password });
-            if (res && res.data.success) {
-                toast.success(res.data && res.data.message);
-                navigate('/login');
-            }
-        } catch (error) {
-            console.log(error);
-        }
+        // try {
+        //     const res = await newRequest.post(`/auth/reset-password/${token}`, { password });
+        //     if (res && res.data.success) {
+        //         toast.success(res.data && res.data.message);
+        //         navigate('/login');
+        //     }
+        // } catch (error) {
+        //     console.log(error);
+        // }
     };
     return (
         <Layout title={'Reset Password'}>
@@ -40,6 +40,7 @@ const ResetPassword = () => {
                 <h4 className="mb-3">RESET PASSWORD</h4>
                 <span>Enter your email to receive instructions on how to reset your password.</span>
                 <Form onSubmit={handleSubmit} style={{ width: '400px' }}>
+                    <input type="hidden" value={token} name="token" />
                     <FloatingLabel controlId="floatingPassword" label="Password" className="mb-3">
                         <Form.Control
                             required

@@ -10,13 +10,9 @@ const generateToken = (res, userId) => {
     });
 };
 
-const refreshToken = (res, userId) => {
-    const token = JWT.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
-
-    return res.cookie('refreshToken', token, {
-        httpOnly: true,
-        secure: process.env.DEV_MODE !== 'development',
-    });
+const generateResetToken = (userId) => {
+    const token = JWT.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '15m' });
+    return token;
 };
 
-export { generateToken, refreshToken };
+export { generateToken, generateResetToken };
