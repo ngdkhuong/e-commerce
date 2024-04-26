@@ -1,39 +1,12 @@
+const ErrorHandler = require('../utils/errorHandler');
+const catchAsyncErrors = require('./catchAsyncErrors');
 const jwt = require('jsonwebtoken');
+const User = require('../models/userModel');
 
-async function authToken(req, res, next) {
-    try {
-        const token = req.cookies?.token;
+exports.isAuthenticateUser = catchAsyncErrors(async (req, res, next) => {
+    const { token } = req.cookies;
 
-        console.log('token', token);
-
-        if (!token) {
-            return res.status(200).json({
-                message: 'Please login...',
-                error: true,
-                success: false,
-            });
-        }
-
-        jwt.verify(token, process.env.TOKEN_SECRET_KEY, function (err, decoded) {
-            console.log(err);
-            console.log('decoded', decoded);
-
-            if (err) {
-                console.log('error auth', err);
-            }
-
-            req.userId = decoded?._id;
-
-            next();
-        });
-    } catch (error) {
-        res.status(400).json({
-            message: error.message || error,
-            data: [],
-            error: true,
-            success: false,
-        });
+    if (!token) {
+        return next(new ErrorHandler('Please Login to access this resource', 401));
     }
-}
-
-module.exports = authToken;
+});
