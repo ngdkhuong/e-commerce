@@ -1,6 +1,6 @@
 const ErrorHandler = require('../utils/errorHandler');
 const catchAsyncErrors = require('../middleware/catchAsyncErrors');
-const User = require('../models/userModel');
+const User = require('../models/user.model');
 const sendToken = require('../utils/JwtToken');
 const sendEmail = require('../utils/SendEmail');
 const crypto = require('crypto');
@@ -132,4 +132,4 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Get User Detail
-exports.getUserDetails = catchAsyncError(async (req, res, next) => {});
+exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {});

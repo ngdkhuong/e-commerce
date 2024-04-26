@@ -18,17 +18,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
 
 // Route Imports
-const product = require('./routes/product.route');
+// const product = require('./routes/product.route');
 const user = require('./routes/user.route');
-const order = require('./routes/order.route');
-const payment = require('./routes/payment.route');
+// const order = require('./routes/order.route');
+// const payment = require('./routes/payment.route');
 
-app.use('/api/v1', product);
+// app.use('/api/v1', product);
 app.use('/api/v1', user);
-app.use('/api/v1', order);
-app.use('/api/v1', payment);
+// app.use('/api/v1', order);
+// app.use('/api/v1', payment);
 
-app.use(express.static(path.join(_dirname, '../client/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../client/build/index.html'));
