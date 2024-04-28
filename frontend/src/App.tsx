@@ -16,8 +16,7 @@ const Home = lazy(() => import('./pages/home'));
 const App = () => {
     const { user, loading } = useSelector((state: RootState) => state.userReducer);
 
-    return;
-    loading ? (
+    return loading ? (
         <Loader />
     ) : (
         <Router>
