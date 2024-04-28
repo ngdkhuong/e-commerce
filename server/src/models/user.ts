@@ -5,7 +5,7 @@ interface IUser extends Document {
     _id: string;
     name: string;
     email: string;
-    photo: string;
+    image: string;
     role: 'admin' | 'user';
     gender: 'male' | 'female';
     dob: Date;
@@ -31,9 +31,9 @@ const schema = new mongoose.Schema(
             required: [true, 'Please enter Name'],
             validate: validator.default.isEmail,
         },
-        photo: {
+        image: {
             type: String,
-            required: [true, 'Please add Photo'],
+            required: [true, 'Please add Image'],
         },
         role: {
             type: String,

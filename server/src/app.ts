@@ -7,6 +7,9 @@ import morgan from 'morgan';
 // import Stripe from 'stripe';
 import cors from 'cors';
 
+// Importing Routes
+import userRoute from './routes/user.route.js';
+
 dotenv.config();
 
 const port = process.env.PORT || 4000;
@@ -26,6 +29,9 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send('API Working with /api/v1');
 });
+
+// Using Routes
+app.use('/api/v1/user', userRoute);
 
 app.use(errorMiddleware);
 
