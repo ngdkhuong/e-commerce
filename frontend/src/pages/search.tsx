@@ -46,7 +46,7 @@ const Search = () => {
         toast.error(err.data.message);
     }
 
-    if (productError) {
+    if (productIsError) {
         const err = productError as CustomError;
         toast.error(err.data.message);
     }
